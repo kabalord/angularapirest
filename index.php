@@ -8,7 +8,7 @@ $app->get("/primeraruta", function() use($app){
 });
 
 $app->get("/segundaruta", function() use($app){
-	echo "hola mundo desde la primera ruta";
+	echo "hola mundo desde la segunda ruta";
 });
 
 $app->run();
