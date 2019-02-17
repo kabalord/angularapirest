@@ -14,6 +14,44 @@ $app->get("/segundaruta", function() use($app){
 	echo "hola mundo desde la segunda ruta";
 });
 
+
+// LISTAR TODOS LOS PRODUCTOS
+
+$app->get('/productos', function() use($db, $app){
+	$sql = 'SELECT * FROM productos ORDER BY id DESC;';
+	$query = $db->query($sql);
+
+	$productos = array();
+	while ($producto = $query->fetch_assoc()) {
+		$productos[] = $producto;
+	}
+
+	$result = array(
+		'status' => 'success',
+		'code' => 200,
+		'data' => $productos
+		);
+
+	echo json_encode($result);
+
+});
+
+
+// DEVOLVER UN SOLO PRODUCTO
+
+
+// ELIMINAR UN SOLO PRODUCTO
+
+
+// ACTUALIZAR UN PRODUCTO
+
+
+// SUBIR UNA IMAGEN A UN PRODUCTO
+
+
+
+// GUARDAR PRODUCTOS EN LA BASE DE DATOS
+
 $app->post('/productos', function() use($app, $db){
 	$json = $app->request->post('json');
 	$data = json_decode($json, true);
@@ -57,7 +95,7 @@ $app->post('/productos', function() use($app, $db){
 			'message' => 'El producto creado correctamente'
 			);
 	}
-	
+
 	echo json_encode($result);
 });
 
