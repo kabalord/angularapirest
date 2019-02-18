@@ -90,6 +90,35 @@ $app->get('/delete-productos/:id', function($id) use($db, $app){
 
 // ACTUALIZAR UN PRODUCTO
 
+$app->post('/update-productos/:id', function($id) use($db, $app){
+
+	$json = $app->request->post('json');
+	$data = json_decode($json, true);
+
+	$sql = "UPDATE productos SET ".
+		   "nombre = '{$data["nombre"]}',".
+		   "descripcion = '{$data["descripcion"]}',".
+		   "precio = '{$data["precio"]}' WHERE id = {$id}";
+
+    $query = $db->query($sql);
+
+		if($query){
+				$result = array(
+				'status' 	=> 'success',
+				'code' 		=> 200,
+				'data' 		=> 'El producto se ha actualizado correctamente!!'
+				);
+		}else{
+				$result = array(
+				'status' 	=> 'error',
+				'code' 		=> 404,
+				'data' 		=> 'El producto no se ha actualizado!!'
+				);
+			}
+
+			echo json_encode($result);
+});
+
 
 // SUBIR UNA IMAGEN A UN PRODUCTO
 
