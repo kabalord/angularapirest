@@ -27,9 +27,9 @@ $app->get('/productos', function() use($db, $app){
 	}
 
 	$result = array(
-		'status' => 'success',
-		'code' => 200,
-		'data' => $productos
+		'status' 	=> 'success',
+		'code' 		=> 200,
+		'data'		=> $productos
 		);
 
 	echo json_encode($result);
@@ -97,8 +97,13 @@ $app->post('/update-productos/:id', function($id) use($db, $app){
 
 	$sql = "UPDATE productos SET ".
 		   "nombre = '{$data["nombre"]}',".
-		   "descripcion = '{$data["descripcion"]}',".
-		   "precio = '{$data["precio"]}' WHERE id = {$id}";
+		   "descripcion = '{$data["descripcion"]}',";
+
+		   if (isset($data['imagen'])) {
+		   $sql .= "imagen = '{$data["imagen"]}',";
+		   }
+
+		   $sql .= "precio = '{$data["precio"]}' WHERE id = {$id}";
 
     $query = $db->query($sql);
 
@@ -122,6 +127,42 @@ $app->post('/update-productos/:id', function($id) use($db, $app){
 
 // SUBIR UNA IMAGEN A UN PRODUCTO
 
+$app->post('/upload-file', function() use($db, $app){
+
+	$result = array(
+				'status' 	=> 'error',
+				'code' 		=> 404,
+				'data' 		=> 'El archivo no ha podido subirse'
+				);
+
+	if (isset($_FILES['uploads'])) {
+		$piramideUploader = new PiramideUploader();
+
+
+		$upload = $piramideUploader->upload('image', 'uploads', 'uploads', array('image/jpeg', 'image/png', 'image/gif'));
+		$file = $piramideUploader->getInfoFile();
+		$file_name = $file['complete_name'];
+
+		if (isset($upload) && $upload['uploaded'] == false) {
+			$result = array(
+				'status' 	=> 'error',
+				'code' 		=> 404,
+				'data' 		=> 'El archivo no ha podido subirse'
+				);
+		}else{
+			$result = array(
+				'status' 	=> 'success',
+				'code' 		=> 200,
+				'data' 		=> 'El archivo se ha subido correctamente',
+				'filename'  => $file_name
+				);
+		}
+
+	}
+
+	echo json_encode($result);
+
+});
 
 
 // GUARDAR PRODUCTOS EN LA BASE DE DATOS
