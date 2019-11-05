@@ -5,7 +5,7 @@ $app = new\Slim\Slim();
 
 $db = new mysqli('localhost', 'root', 'root', 'angularapirest');
 
-// CONFIGURACION DE CABECERAS PARA PERMITIR ACCESOS CORS
+// CONFIGURACION DE CABECERAS PARA PERMITIR ACCESO CORS
 
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
